@@ -1,5 +1,10 @@
+# college-assistant/.gitignore
+
 # Virtual environment
 .venv/
+
+# node_modules  ← ADD THIS
+node_modules/
 
 # Frontend
 frontend/node_modules/
