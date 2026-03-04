@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import "./components/auth/AuthScreen.css";
+@import "./components/sidebar/Sidebar.css";
+@import "./components/chat/Chat.css";
+@import "./components/ui/Markdown.css";
+
+/* ── Variables ───────────────────────────────────────────────────────────────── */
+:root {
+  --bg-deep:        #080c14;
+  --bg-dark:        #0d1117;
+  --bg-mid:         #111827;
+  --bg-card:        #141d2e;
+  --bg-hover:       #1a2540;
+  --bg-active:      #1e3a5f;
+  --border:         rgba(255,255,255,0.06);
+  --border-focus:   rgba(56,189,248,0.5);
+  --accent:         #38bdf8;
+  --accent-dim:     rgba(56,189,248,0.15);
+  --accent-glow:    rgba(56,189,248,0.25);
+  --text-primary:   #f0f6ff;
+  --text-secondary: #8b9abf;
+  --text-muted:     #4a5978;
+  --user-bubble:    #1d4ed8;
+  --bot-bubble:     #1a2234;
+  --success:        #22d3a0;
+  --error:          #f87171;
+  --font-display:   'Syne', sans-serif;
+  --font-body:      'DM Sans', sans-serif;
+  --sidebar-w:      280px;
+  --radius-sm:      8px;
+  --radius-md:      12px;
+  --radius-lg:      18px;
+  --radius-xl:      24px;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── App Shell ───────────────────────────────────────────────────────────────── */
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+/* ── Toast ───────────────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  top: 32px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 22px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.88rem; font-weight: 500;
+  z-index: 9999;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+.toast-success { background: rgba(34,211,160,0.12); border: 1px solid rgba(34,211,160,0.35); color: var(--success); }
+.toast-error   { background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.35); color: var(--error); }
+.toast-icon    { font-size: 1rem; font-weight: 700; }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-16px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(16); }
+}
+
+/* ── Modals ──────────────────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(5px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease;
+}
+.modal-box {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-xl);
+  padding: 36px 32px 28px;
+  width: 100%; max-width: 380px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal-icon {
+  width: 58px; height: 58px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; margin-bottom: 16px;
+}
+.modal-icon-warn,
+.modal-icon-delete { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); }
+.modal-title   { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+.modal-sub     { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 28px; max-width: 280px; }
+.modal-actions { display: flex; gap: 10px; width: 100%; }
+.modal-cancel {
+  flex: 1; padding: 11px; background: none;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  color: var(--text-secondary); font-family: var(--font-body);
+  font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.modal-cancel:hover { background: var(--bg-hover); color: var(--text-primary); border-color: rgba(255,255,255,0.1); }
+.modal-confirm {
+  flex: 1; padding: 11px;
+  background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.3);
+  border-radius: var(--radius-sm); color: var(--error);
+  font-family: var(--font-body); font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.modal-confirm:hover { background: rgba(248,113,113,0.22); border-color: rgba(248,113,113,0.5); }
+
+/* ── Shared Animations ───────────────────────────────────────────────────────── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25%     { transform: translateX(-5px); }
+  75%     { transform: translateX(5px); }
+}
